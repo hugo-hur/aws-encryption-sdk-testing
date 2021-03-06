@@ -9,6 +9,13 @@ from aws_encryption_sdk.identifiers import CommitmentPolicy, EncryptionKeyType, 
 import masterkeyprovider
 
 
+import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument("filename_in")
+parser.add_argument("filename_out")
+args = parser.parse_args()
+
+
 client = aws_encryption_sdk.EncryptionSDKClient(commitment_policy=CommitmentPolicy.REQUIRE_ENCRYPT_REQUIRE_DECRYPT)
 
 
@@ -35,7 +42,7 @@ keyp.add_master_key_provider(escrow_decrypt_master_key)
 
 
 #Decrypt with static provider
-with open("ciphertext_filename.bin", "rb") as ciphertext, open("out.txt", "wb") as plaintext:
+with open(args.filename_in, "rb") as ciphertext, open(args.filename_out "wb") as plaintext:
     with client.stream(source=ciphertext, mode="d", key_provider=keyp) as static_decryptor:
         for chunk in static_decryptor:
             plaintext.write(chunk)

@@ -27,12 +27,18 @@ with open("ciphertext_filename.bin", "rb") as ciphertext, open("out.txt", "wb") 
         for chunk in static_decryptor:
             plaintext.write(chunk)
 """
+import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument("filename_in")
+parser.add_argument("filename_out")
+args = parser.parse_args()
 
 
 
 public_key_pem = None
 with open("rsa_key.pub", "rb") as key_file:
     public_key_pem = key_file.read()
+
 escrow_encrypt_master_key = RawMasterKey(
             # The provider ID and key ID are defined by you
             # and are used by the raw RSA master key
@@ -56,7 +62,7 @@ keyp = masterkeyprovider.StaticRandomMasterKeyProvider()
 keyp.add_master_key_provider(escrow_encrypt_master_key)
 
 
-with open("input.txt", "rb") as plaintext, open("ciphertext_filename.bin", "wb") as ciphertext:
+with open(args.filename_in, "rb") as plaintext, open(filename_out, "wb") as ciphertext:
     with client.stream(source=plaintext, mode="e", key_provider=keyp) as encryptor:
         for chunk in encryptor:
             ciphertext.write(chunk)
