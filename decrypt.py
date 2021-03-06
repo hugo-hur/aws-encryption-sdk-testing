@@ -6,7 +6,7 @@ from aws_encryption_sdk.key_providers.raw import RawMasterKeyProvider
 from aws_encryption_sdk.internal.crypto.wrapping_keys import WrappingKey
 from aws_encryption_sdk.identifiers import CommitmentPolicy, EncryptionKeyType, WrappingAlgorithm
 
-import masterkeyprovider
+#import masterkeyprovider
 
 
 import argparse
@@ -34,15 +34,21 @@ escrow_decrypt_master_key = RawMasterKey(
     ),
 )
 
-keyp = masterkeyprovider.StaticRandomMasterKeyProvider()
-keyp.add_master_key_provider(escrow_decrypt_master_key)
+#keyp = masterkeyprovider.StaticRandomMasterKeyProvider()
+#keyp.add_master_key_provider(escrow_decrypt_master_key)
 
 
 
 
 
 #Decrypt with static provider
-with open(args.filename_in, "rb") as ciphertext, open(args.filename_out "wb") as plaintext:
-    with client.stream(source=ciphertext, mode="d", key_provider=keyp) as static_decryptor:
+with open(args.filename_in, "rb") as ciphertext, open(args.filename_out, "wb") as plaintext:
+    with client.stream(source=ciphertext, mode="d", key_provider=escrow_decrypt_master_key) as static_decryptor:
         for chunk in static_decryptor:
             plaintext.write(chunk)
+
+
+
+#decrypted_escrow, decrypt_header_escrow = client.decrypt(source=open('testiulos.bin', 'rb').read(), key_provider=escrow_decrypt_master_key)
+
+#print(decrypted_escrow)

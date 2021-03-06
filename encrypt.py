@@ -58,12 +58,12 @@ escrow_encrypt_master_key = RawMasterKey(
             )
         )
 
-keyp = masterkeyprovider.StaticRandomMasterKeyProvider()
-keyp.add_master_key_provider(escrow_encrypt_master_key)
+#keyp = masterkeyprovider.StaticRandomMasterKeyProvider()
+#keyp.add_master_key_provider(escrow_encrypt_master_key)
 
 
 with open(args.filename_in, "rb") as plaintext, open(args.filename_out, "wb") as ciphertext:
-    with client.stream(source=plaintext, mode="e", key_provider=keyp) as encryptor:
+    with client.stream(source=plaintext, mode="e", key_provider=escrow_encrypt_master_key) as encryptor:
         for chunk in encryptor:
             ciphertext.write(chunk)
 
@@ -71,4 +71,9 @@ with open(args.filename_in, "rb") as plaintext, open(args.filename_out, "wb") as
 
 
 
+
+#ciphertext, encrypt_header = client.encrypt(source="Hello world!", key_provider=escrow_encrypt_master_key)
+
+#with open('testiulos.bin', 'wb') as f:
+#    f.write(ciphertext)
 
