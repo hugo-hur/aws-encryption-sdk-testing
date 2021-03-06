@@ -62,7 +62,7 @@ keyp = masterkeyprovider.StaticRandomMasterKeyProvider()
 keyp.add_master_key_provider(escrow_encrypt_master_key)
 
 
-with open(args.filename_in, "rb") as plaintext, open(filename_out, "wb") as ciphertext:
+with open(args.filename_in, "rb") as plaintext, open(args.filename_out, "wb") as ciphertext:
     with client.stream(source=plaintext, mode="e", key_provider=keyp) as encryptor:
         for chunk in encryptor:
             ciphertext.write(chunk)
